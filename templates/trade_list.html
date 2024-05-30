@@ -1,0 +1,44 @@
+{% extends '_base.html' %}
+
+{% block title %}Trade List{% endblock %}
+
+{% block content %}
+    <h1>Your Trades</h1>
+        {% if trades %}
+            <h2>Trades You Received</h2>
+            <ul>
+                {% for trade in trades %}
+                {% if trade.seller == user %}
+                    <li>Trade ID: {{ trade.id }} | Status: {{ trade.get_status_display }} | Item: {{ trade.trade_item.name }} | Buyer: {{ trade.buyer.username }} | Status: {{ trade.get_status_display }}</li>
+                    {% if trade.status == "P" %}
+                        <form method="post" action="{% url 'trade_action' %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="trade_id" value="{{ trade.id }}">
+                            <button type="submit" name="action" value="accept">Accept</button>
+                            <button type="submit" name="action" value="reject">Reject</button>
+                        </form>
+                    {% endif %}
+                {% endif %}
+                {% endfor %}
+            </ul>
+            <h2>Trades You Initiated</h2>
+            <ul>
+                {% for trade in trades %}
+                {% if trade.buyer == user %}
+                    <li>Trade ID: {{ trade.id }} | Status: {{ trade.get_status_display }} | Item: {{ trade.trade_item.name }} | Seller: {{ trade.seller.username }} | Status: {{ trade.get_status_display }}</li>
+                    {% if trade.status == "P" %}
+                            <form method="post" action="{% url 'trade_action' %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="trade_id" value="{{ trade.id }}">
+                                <button type="submit" name="action" value="cancel">Cancel</button>
+                            </form>
+                    {% endif %}
+                {% endif %}
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>You have no trades.</p>
+        {% endif %}
+        <h2>Initiate a Trade Offer</h2>
+        <p><a href="{% url 'trade_offer_create' %}"><button type="button">Create Trade Offer</button></a></p>
+{% endblock %}

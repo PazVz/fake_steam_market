@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Fake Steam Website{% endblock %}</title>
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="{% url 'home' %}"><button type="button">Home</button></a></li>
+                <li><a href="{% url 'item_list' %}"><button type="button">my_items</button></a></li>
+                <li><a href="{% url 'trade_list' %}"><button type="button">my_trades</button></a></li>
+                {% if user.is_authenticated %}
+                    <li>
+                        <form method="post" action="{% url 'logout' %}">
+                            {% csrf_token %}
+                            <button type="submit">Logout</button>
+                        </form>
+                    </li>
+                    <li><h1>Welcome, {{ user.username }}!</h1></li>
+                {% else %}
+                    <li>
+                        <a href="{% url 'login' %}">
+                            <button type="button">Login</button>
+                        </a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        {% block content %}
+        <!-- Content goes here -->
+        {% endblock %}
+    </main>
+
+    <footer>
+        <p>&copy; fake steam website</p>
+    </footer>
+</body>
+</html>

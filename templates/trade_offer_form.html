@@ -1,0 +1,18 @@
+{% extends '_base.html' %}
+
+{% block title %}Create Trade Offer{% endblock %}
+
+{% block content %}
+  <h1>Create a Trade Offer</h1>
+  <form method="post" action="{% url 'trade_offer_create' %}">
+    {% csrf_token %}
+    <label for="item">Select an item to buy:</label>
+    <select name="item" id="item">
+      {% for item in items %}
+        <option value="{{ item.id }}">{{ item.name }} (Owner: {{ item.owner.username }})</option>
+      {% endfor %}
+    </select>
+    <br>
+    <button type="submit">Create Trade Offer</button>
+  </form>
+{% endblock %}
