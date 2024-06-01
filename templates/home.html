@@ -3,5 +3,12 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-<h1>This is a Fake Steam Website</h1>
+<div class="jumbotron">
+    <div class="container">
+        <h1>Steam Website</h1>
+        <p>This is a fake Steam website.</p>
+        <p><a class="btn btn-primary btn-lg" href="{% url 'item_list' %}" role="button">View My Items</a></p>
+    </div>
+</div>
+
 {% endblock %}

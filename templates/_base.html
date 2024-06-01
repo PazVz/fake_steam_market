@@ -4,41 +4,52 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Fake Steam Website{% endblock %}</title>
+    <!-- 引入Bootstrap 3 CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 </head>
 <body>
     <header>
-        <nav>
-            <ul>
-                <li><a href="{% url 'home' %}"><button type="button">Home</button></a></li>
-                <li><a href="{% url 'item_list' %}"><button type="button">my_items</button></a></li>
-                <li><a href="{% url 'trade_list' %}"><button type="button">my_trades</button></a></li>
-                {% if user.is_authenticated %}
-                    <li>
-                        <form method="post" action="{% url 'logout' %}">
-                            {% csrf_token %}
-                            <button type="submit">Logout</button>
-                        </form>
-                    </li>
-                    <li><h1>Welcome, {{ user.username }}!</h1></li>
-                {% else %}
-                    <li>
-                        <a href="{% url 'login' %}">
-                            <button type="button">Login</button>
-                        </a>
-                    </li>
-                {% endif %}
-            </ul>
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="{% url 'home' %}">Fake Steam</a>
+                </div>
+                <ul class="nav navbar-nav">
+                    <li><a href="{% url 'home' %}">Home</a></li>
+                    <li><a href="{% url 'item_list' %}">My Items</a></li>
+                    <li><a href="{% url 'trade_list' %}">My Trades</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    {% if user.is_authenticated %}
+                        <li>
+                            <form method="post" action="{% url 'logout' %}" class="navbar-form navbar-left">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-default">Logout</button>
+                            </form>
+                        </li>
+                        <li><p class="navbar-text">Welcome, {{ user.username }}!</p></li>
+                    {% else %}
+                        <li><a href="{% url 'login' %}"><span class="glyphicon glyphicon-log-in"></span> Login</a></li>
+                    {% endif %}
+                </ul>
+            </div>
         </nav>
     </header>
 
-    <main>
+    <main class="container">
         {% block content %}
         <!-- Content goes here -->
         {% endblock %}
     </main>
 
-    <footer>
-        <p>&copy; fake steam website</p>
+    <footer class="footer">
+        <div class="container">
+            <p class="text-muted">&copy; Fake Steam Website</p>
+        </div>
     </footer>
+
+    <!-- 引入jQuery和Bootstrap 3 JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </body>
 </html>

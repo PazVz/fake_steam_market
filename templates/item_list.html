@@ -3,18 +3,34 @@
 {% block title %}Item List{% endblock %}
 
 {% block content %}
-  <h1>Your Items</h1>
-  {% if user.is_authenticated %}
-    {% if object_list %}
-      <ul>
-        {% for item in object_list %}
-          <li>{{ item.name }} - {{ item.description }} ({{ item.get_wear_display }})</li>
-        {% endfor %}
-      </ul>
+<div class="container">
+    <h1 class="page-header">Your Items</h1>
+    {% if user.is_authenticated %}
+        {% if object_list %}
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Item List</h3>
+                </div>
+                <div class="panel-body">
+                    <ul class="list-group">
+                        {% for item in object_list %}
+                            <li class="list-group-item">
+                                <h4 class="list-group-item-heading">{{ item.name }}</h4>
+                                <p class="list-group-item-text">{{ item.description }} <span class="label label-info">{{ item.get_wear_display }}</span></p>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        {% else %}
+            <div class="alert alert-warning" role="alert">
+                You have no items.
+            </div>
+        {% endif %}
     {% else %}
-      <p>You have no items.</p>
+        <div class="alert alert-info" role="alert">
+            Please <a href="{% url 'login' %}" class="alert-link">login</a> to see your items.
+        </div>
     {% endif %}
-  {% else %}
-    <p>Please <a href="{% url 'login' %}">login</a> to see your items.</p>
-  {% endif %}
+</div>
 {% endblock %}

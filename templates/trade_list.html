@@ -3,42 +3,78 @@
 {% block title %}Trade List{% endblock %}
 
 {% block content %}
-    <h1>Your Trades</h1>
-        {% if trades %}
-            <h2>Trades You Received</h2>
-            <ul>
-                {% for trade in trades %}
-                {% if trade.seller == user %}
-                    <li>Trade ID: {{ trade.id }} | Status: {{ trade.get_status_display }} | Item: {{ trade.trade_item.name }} | Buyer: {{ trade.buyer.username }} | Status: {{ trade.get_status_display }}</li>
-                    {% if trade.status == "P" %}
-                        <form method="post" action="{% url 'trade_action' %}">
-                            {% csrf_token %}
-                            <input type="hidden" name="trade_id" value="{{ trade.id }}">
-                            <button type="submit" name="action" value="accept">Accept</button>
-                            <button type="submit" name="action" value="reject">Reject</button>
-                        </form>
+<div class="container">
+    <h1 class="page-header">Your Trades</h1>
+    {% if trades %}
+        <h2>Trades You Received</h2>
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <ul class="list-group">
+                    {% for trade in trades %}
+                    {% if trade.seller == user %}
+                        <li class="list-group-item">
+                            <div class="row">
+                                <div class="col-md-12"><strong>Trade ID:</strong> {{ trade.id }}</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6"><strong>Status:</strong> <span class="label label-info">{{ trade.get_status_display }}</span></div>
+                                <div class="col-md-6"><strong>Item:</strong> {{ trade.trade_item.name }}</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12"><strong>Buyer:</strong> {{ trade.buyer.username }}</div>
+                            </div>
+                            {% if trade.status == "P" %}
+                                <form method="post" action="{% url 'trade_action' %}" class="form-inline">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="trade_id" value="{{ trade.id }}">
+                                    <button type="submit" name="action" value="accept" class="btn btn-success btn-sm">Accept</button>
+                                    <button type="submit" name="action" value="reject" class="btn btn-danger btn-sm">Reject</button>
+                                </form>
+                            {% endif %}
+                        </li>
                     {% endif %}
-                {% endif %}
-                {% endfor %}
-            </ul>
-            <h2>Trades You Initiated</h2>
-            <ul>
-                {% for trade in trades %}
-                {% if trade.buyer == user %}
-                    <li>Trade ID: {{ trade.id }} | Status: {{ trade.get_status_display }} | Item: {{ trade.trade_item.name }} | Seller: {{ trade.seller.username }} | Status: {{ trade.get_status_display }}</li>
-                    {% if trade.status == "P" %}
-                            <form method="post" action="{% url 'trade_action' %}">
-                                {% csrf_token %}
-                                <input type="hidden" name="trade_id" value="{{ trade.id }}">
-                                <button type="submit" name="action" value="cancel">Cancel</button>
-                            </form>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+        <h2>Trades You Initiated</h2>
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <ul class="list-group">
+                    {% for trade in trades %}
+                    {% if trade.buyer == user %}
+                        <li class="list-group-item">
+                            <div class="row">
+                                <div class="col-md-12"><strong>Trade ID:</strong> {{ trade.id }}</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6"><strong>Status:</strong> <span class="label label-info">{{ trade.get_status_display }}</span></div>
+                                <div class="col-md-6"><strong>Item:</strong> {{ trade.trade_item.name }}</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12"><strong>Seller:</strong> {{ trade.seller.username }}</div>
+                            </div>
+                            {% if trade.status == "P" %}
+                                <form method="post" action="{% url 'trade_action' %}" class="form-inline">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="trade_id" value="{{ trade.id }}">
+                                    <button type="submit" name="action" value="cancel" class="btn btn-warning btn-sm">Cancel</button>
+                                </form>
+                            {% endif %}
+                        </li>
                     {% endif %}
-                {% endif %}
-                {% endfor %}
-            </ul>
-        {% else %}
-            <p>You have no trades.</p>
-        {% endif %}
-        <h2>Initiate a Trade Offer</h2>
-        <p><a href="{% url 'trade_offer_create' %}"><button type="button">Create Trade Offer</button></a></p>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+    {% else %}
+        <div class="alert alert-warning" role="alert">
+            You have no trades.
+        </div>
+    {% endif %}
+
+    <h2>Initiate a Trade Offer</h2>
+    <p><a href="{% url 'trade_offer_create' %}" class="btn btn-primary">Create Trade Offer</a></p>
+</div>
 {% endblock %}
