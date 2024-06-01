@@ -90,6 +90,6 @@ class TradeStatusAPIView(APIView):
             )
 
         serializer = TradeSerializer(trade)
-        return Response(serializer.data)
+        return Response([serializer.data])
 
 
